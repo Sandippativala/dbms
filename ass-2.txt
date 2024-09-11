@@ -1,0 +1,176 @@
+********Assignment -1********
+create table s(
+	sno char(3) PRIMARY KEY,
+	sname varchar(50),
+	s_status int,
+	s_city varchar(25)
+);
+
+create table p(
+	pno char(3) PRIMARY KEY,
+	pname varchar(20),
+	color varchar(10),
+	weight float(5.0),
+	p_city varchar(25)
+);
+create table sp(
+	sno char(3),
+	pno char(3),
+	FOREIGN KEY (sno) REFERENCES s(sno),
+	FOREIGN KEY (pno) REFERENCES p(pno),
+	qty int,
+	PRIMARY KEY(sno,pno)
+);
+
+
+
+****** Assignment 2 *******
+
+[1]  SELECT * FROM p WHERE p_city='London';
+
+[2]  SELECT weight from p WHERE weight=(select max(weight) from p);
+
+[3]  SELECT pno,pname from p where color='Red';
+
+[4] SELECT DISTINCT s.sname,s.s_city from s,sp where s.sno=sp.sno and sp.qty>200;
+
+[5] SELECT max(weight) FROM p WHERE weight=(select max(weight) from p where weight <(select max(weight) from p));
+
+
+
+**********Assignment 3**********
+
+[6]     SELECT sp.sno,sp.qty,p.weight 
+	from sp,p 
+	where p.pno=sp.pno 
+	and weight=(select max(weight) from p );
+
+[7]     SELECT DISTINCT s.sno,sp.qty,p.color 
+	FROM s,sp,p
+	where s.sno=sp.sno 
+	AND p.pno=sp.pno
+	and p.color="Red";
+
+[8]     SELECT s.sname,sp.qty,p.p_city,s.s_status 
+	FROM s,sp,p
+	WHERE s.sno=sp.sno
+	AND p.pno=sp.pno
+	AND s.s_status < 30;
+
+
+[9]	SELECT DISTINCT sp.sno,sum(sp.qty) 
+	from sp 
+	GROUP BY sno;
+
+[10]   	SELECT DISTINCT sp.pno,sum(sp.qty) 
+	from sp 
+	GROUP BY pno;
+
+
+
+**************Assignment - 4*************
+
+[11]	SELECT p.pname ,sum(qty) 
+	FROM p,sp
+	WHERE p.pno=sp.pno
+	GROUP BY pname;
+
+
+[12] 	SELECT s.sno,s.sname,sum(qty)
+	FROM s,sp
+	WHERE s.sno=sp.sno
+	AND s.sno<'s4' 
+	GROUP BY sname;
+
+[13]	SELECT s.sname,s.sno,s.s_status,sum(qty)
+	FROM s,sp
+	WHERE s.sno=sp.sno
+	AND s_status=20
+	GROUP BY sname;
+
+
+
+
+*****************Assignment- 5*****************
+--------------------------------------
+CREATE TABLE dept(
+	dept_id PRIMARY KEY,
+	dept_name varchar(30),
+	dept_location varchar(50)
+);
+
+--------------------------------------------------
+
+CREATE TABLE emp(
+	emp_id int PRIMARY KEY,
+    emp_name varchar(35),
+    emp_dept_id int,
+    emp_boss_id int,
+    emp_salary bigint,
+    FOREIGN KEY emp_dept_id REFERENCES dept(dept_id)
+);
+---------------------------------------------------------------------------------------------------
+INSERT INTO `dept` (`dept_id`, `dept_name`, `dept_location`) VALUES ('1', 'Computer', 'Ahmedabad');
+INSERT INTO `dept` (`dept_id`, `dept_name`, `dept_location`) VALUES ('2', 'Micro biology', 'Sadra');
+INSERT INTO `dept` (`dept_id`, `dept_name`, `dept_location`) VALUES ('3', 'Management', 'Randheja');
+INSERT INTO `dept` (`dept_id`, `dept_name`, `dept_location`) VALUES ('4', 'Main Office', 'Ahmedabad');
+---------------------------------------------------------------------------------------------------
+INSERT INTO `emp`(`emp_id`, `emp_name`, `emp_dept_id`, `emp_boss_id`, `emp_salary`) VALUES 
+	('101','Nikhil','1','401','200000'),
+	('102','Satish','1','101','210000'),
+    ('103','Vrushali','1','101','175000'),
+    ('201','Archana','2','401','200000'),
+    ('202','Tanvi','2','201','135000'),
+    ('203','Dharti','2','201','175000'),
+    ('301','Hemali','3','401','235000'),
+    ('302','Vishal','3','301','180000'),
+    ('303','Nafis','3','302','199000'),
+    ('401','Registar','4','401','500000'),
+    ('402','Bipin','4','401','490000'),
+    ('403','Narendra','4','402','1000000'),
+    ('404','Mohan','4','402','800000');
+
+**********************Assignment--6*************************
+
+[1]	SELECT emp.emp_name as EmployeName , dept.dept_name as DepartmentName , bossemp.emp_name as Boss , bossdept.dept_name as BossDpartment
+	from dept , emp ,emp as bossemp ,dept as bossdept 
+   	WHERE emp.emp_boss_id=bossemp.emp_id
+    	and emp.emp_dept_id=dept.dept_id
+    	and bossemp.emp_dept_id=bossdept.dept_id;
+
+[2]	SELECT emp.emp_name as EmployeName , dept.dept_name as DepartmentName , bossemp.emp_name as Boss , bossdept.dept_name as BossDpartment , emp.emp_salary
+	from dept , emp, emp as bossemp , dept as bossdept 
+    	WHERE emp.emp_boss_id=bossemp.emp_id
+    	and emp.emp_dept_id=dept.dept_id
+    	and bossemp.emp_dept_id=bossdept.dept_id
+    	and emp.emp_salary>bossemp.emp_salary;
+
+
+
+************************Assignment - 7***********************
+
+
+[1]	SELECT dept.dept_name, MAX(emp.emp_salary) AS max_salary
+	FROM dept ,emp where dept.dept_id = emp.emp_dept_id
+	GROUP BY dept.dept_name;
+
+
+[2]	SELECT dept.dept_name, COUNT(emp.emp_name) AS total_employe
+	FROM dept ,emp where dept.dept_id = emp.emp_dept_id
+	GROUP BY dept.dept_name;
+
+
+**********************Assignment -8*******************************
+
+--------------------------------------------------------------------
+CREATE TABLE account
+(
+	acc_no int,
+    	amount decimal(10,2)
+);
+
+-------------------------------------------------------------------
+
+
+
+*********************Assignment - 9*******************************
